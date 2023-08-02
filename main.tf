@@ -6,7 +6,7 @@ data "aws_caller_identity" "current" {}
 
 data "aws_partition" "current" {}
 locals {
-  create_bucket = var.create_bucket 
+  create_bucket = var.create_bucket
 
   attach_policy = var.attach_require_latest_tls_policy || var.attach_elb_log_delivery_policy || var.attach_lb_log_delivery_policy || var.attach_deny_insecure_transport_policy || var.attach_inventory_destination_policy || var.attach_deny_incorrect_encryption_headers || var.attach_deny_incorrect_kms_key_sse || var.attach_deny_unencrypted_object_uploads || var.attach_policy
 
@@ -59,7 +59,7 @@ resource "aws_s3_bucket_acl" "this" {
 
           grantee {
             type          = grant.value.type
-            id            = try(grant.value.id, null)
+            id            = try(grant.value.id, data.aws_canonical_user_id.this.id)
             uri           = try(grant.value.uri, null)
             email_address = try(grant.value.email, null)
           }
