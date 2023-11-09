@@ -327,3 +327,9 @@ variable "object_lock_configuration_rule" {
   type        = any
   default     = []
 }
+
+variable "create_object_lock_configuration" {
+  description = "Whether to create Object Lock configuration."
+  type        = bool
+  default     = false
+}

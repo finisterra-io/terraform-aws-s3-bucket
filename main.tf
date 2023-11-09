@@ -327,8 +327,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   depends_on = [aws_s3_bucket_versioning.this]
 }
 
+
 resource "aws_s3_bucket_object_lock_configuration" "this" {
-  count = local.create_bucket ? 1 : 0
+  count = local.create_bucket && var.create_object_lock_configuration ? 1 : 0
 
   bucket                = aws_s3_bucket.this[0].id
   expected_bucket_owner = var.expected_bucket_owner
@@ -348,6 +349,7 @@ resource "aws_s3_bucket_object_lock_configuration" "this" {
     }
   }
 }
+
 
 resource "aws_s3_bucket_replication_configuration" "this" {
   count = local.create_bucket && length(keys(var.replication_configuration)) > 0 ? 1 : 0
