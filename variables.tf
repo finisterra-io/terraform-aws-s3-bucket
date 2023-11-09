@@ -309,3 +309,21 @@ variable "object_ownership" {
   type        = string
   default     = "BucketOwnerEnforced"
 }
+
+variable "object_lock_configuration_object_lock_enabled" {
+  description = "Whether S3 bucket should have an Object Lock configuration enabled."
+  type        = string
+  default     = "Enabled"
+}
+
+variable "object_lock_configuration_token" {
+  description = "The default Object Lock retention mode. Valid values: GOVERNANCE or COMPLIANCE."
+  type        = string
+  default     = null
+}
+
+variable "object_lock_configuration_rule" {
+  description = "Map containing default Object Lock retention settings."
+  type        = any
+  default     = []
+}

@@ -328,17 +328,23 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
 }
 
 resource "aws_s3_bucket_object_lock_configuration" "this" {
-  count = local.create_bucket && var.object_lock_enabled && try(var.object_lock_configuration.rule.default_retention, null) != null ? 1 : 0
+  count = local.create_bucket
 
   bucket                = aws_s3_bucket.this[0].id
   expected_bucket_owner = var.expected_bucket_owner
-  token                 = try(var.object_lock_configuration.token, null)
+  token                 = var.object_lock_configuration_token
+  object_lock_enabled   = var.object_lock_configuration_object_lock_enabled
 
-  rule {
-    default_retention {
-      mode  = var.object_lock_configuration.rule.default_retention.mode
-      days  = try(var.object_lock_configuration.rule.default_retention.days, null)
-      years = try(var.object_lock_configuration.rule.default_retention.years, null)
+
+  dynamic "rule" {
+    for_each = var.object_lock_configuration_rule
+
+    content {
+      default_retention {
+        mode  = rule.value.default_retention_mode
+        days  = try(rule.value.default_retention_days, null)
+        years = try(rule.value.default_retention_years, null)
+      }
     }
   }
 }
