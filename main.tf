@@ -342,9 +342,9 @@ resource "aws_s3_bucket_object_lock_configuration" "this" {
 
     content {
       default_retention {
-        mode  = rule.value.mode
-        days  = try(rule.value.days, null)
-        years = try(rule.value.years, null)
+        mode  = rule.value.default_retention[0].mode
+        days  = try(rule.value.default_retention[0].days, null)
+        years = try(rule.value.default_retention[0].years, null)
       }
     }
   }
