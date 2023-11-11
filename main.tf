@@ -227,10 +227,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
 
       # Max 1 block - abort_incomplete_multipart_upload
       dynamic "abort_incomplete_multipart_upload" {
-        for_each = try([rule.value.abort_incomplete_multipart_upload_days], [])
+        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
 
         content {
-          days_after_initiation = try(rule.value.abort_incomplete_multipart_upload_days, null)
+          days_after_initiation = try(rule.value.abort_incomplete_multipart_upload.days_after_initiation, null)
         }
       }
 
