@@ -116,8 +116,8 @@ resource "aws_s3_bucket_website_configuration" "this" {
         for_each = routing_rule.value.condition
 
         content {
-          http_error_code_returned_equals = try(routing_rule.value.condition["http_error_code_returned_equals"], null)
-          key_prefix_equals               = try(routing_rule.value.condition["key_prefix_equals"], null)
+          http_error_code_returned_equals = try(condition.value.http_error_code_returned_equals, null)
+          key_prefix_equals               = try(condition.value.key_prefix_equals, null)
         }
       }
 
