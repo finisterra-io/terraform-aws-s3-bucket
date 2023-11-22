@@ -35,7 +35,7 @@ resource "aws_s3_bucket_logging" "this" {
   bucket = aws_s3_bucket.this[0].id
 
   target_bucket = var.logging["target_bucket"]
-  target_prefix = try(var.logging["target_prefix"], null)
+  target_prefix = try(var.logging["target_prefix"], "")
 }
 
 resource "aws_s3_bucket_acl" "this" {
