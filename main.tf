@@ -104,7 +104,7 @@ resource "aws_s3_bucket_website_configuration" "this" {
 
     content {
       host_name = redirect_all_requests_to.value.host_name
-      protocol  = try(redirect_all_requests_to.value.protocol, null)
+      protocol  = redirect_all_requests_to.value.protocol != "" ? redirect_all_requests_to.value.protocol : null
     }
   }
 
