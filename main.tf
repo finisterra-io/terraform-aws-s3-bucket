@@ -1072,7 +1072,7 @@ resource "aws_s3_bucket_analytics_configuration" "this" {
 
     content {
       prefix = try(filter.prefix, null)
-      tags   = try(filter.tags, {}})
+      tags   = try(filter.tags, {})
     }
   }
 
