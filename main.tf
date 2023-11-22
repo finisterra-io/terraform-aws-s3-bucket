@@ -1068,11 +1068,11 @@ resource "aws_s3_bucket_analytics_configuration" "this" {
   name   = each.key
 
   dynamic "filter" {
-    for_each = length(try(flatten([each.value.filter]), [])) == 0 ? [] : [true]
+    for_each = each.value.filter
 
     content {
-      prefix = try(each.value.filter.prefix, null)
-      tags   = try(each.value.filter.tags, null)
+      prefix = try(filter.prefix, null)
+      tags   = try(filter.tags, null)
     }
   }
 
