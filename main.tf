@@ -109,11 +109,11 @@ resource "aws_s3_bucket_website_configuration" "this" {
   }
 
   dynamic "routing_rule" {
-    for_each = try(flatten([var.website["routing_rules"]]), [])
+    for_each = try(var.website["routing_rules"], [])
 
     content {
       dynamic "condition" {
-        for_each = [try([routing_rule.value.condition], [])]
+        for_each = routing_rule.value.condition
 
         content {
           http_error_code_returned_equals = try(routing_rule.value.condition["http_error_code_returned_equals"], null)
@@ -122,11 +122,11 @@ resource "aws_s3_bucket_website_configuration" "this" {
       }
 
       redirect {
-        host_name               = try(routing_rule.value.redirect["host_name"], null)
-        http_redirect_code      = try(routing_rule.value.redirect["http_redirect_code"], null)
-        protocol                = try(routing_rule.value.redirect["protocol"], null)
-        replace_key_prefix_with = try(routing_rule.value.redirect["replace_key_prefix_with"], null)
-        replace_key_with        = try(routing_rule.value.redirect["replace_key_with"], null)
+        host_name               = try(routing_rule.value.redirect[0]["host_name"], null)
+        http_redirect_code      = try(routing_rule.value.redirect[0]["http_redirect_code"], null)
+        protocol                = try(routing_rule.value.redirect[0]["protocol"], null)
+        replace_key_prefix_with = try(routing_rule.value.redirect[0]["replace_key_prefix_with"], null)
+        replace_key_with        = try(routing_rule.value.redirect[0]["replace_key_with"], null)
       }
     }
   }
