@@ -1071,8 +1071,8 @@ resource "aws_s3_bucket_analytics_configuration" "this" {
     for_each = each.value.filter
 
     content {
-      prefix = try(filter.prefix, null)
-      tags   = try(filter.tags, {})
+      prefix = try(filter.value.prefix, null)
+      tags   = try(filter.value.tags, {})
     }
   }
 
