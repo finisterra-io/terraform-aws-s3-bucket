@@ -213,7 +213,7 @@ resource "aws_s3_bucket_cors_configuration" "this" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
-  count = local.create_bucket && length(var.var.lifecycle_rule) > 0 ? 1 : 0
+  count = local.create_bucket && length(var.lifecycle_rule) > 0 ? 1 : 0
 
   bucket                = aws_s3_bucket.this[0].id
   expected_bucket_owner = var.expected_bucket_owner
