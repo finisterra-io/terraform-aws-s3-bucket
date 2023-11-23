@@ -309,22 +309,22 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
           }
         }
       }
-
       dynamic "filter" {
         for_each = [
           for v in try(rule.value.filter, []) :
-          v if length(keys(v)) > 1 || length(try(v.tags, {})) > 1
+          v.and[0] if length(keys(v.and[0])) > 1 || length(try(v.and[0].tags, {})) > 1
         ]
 
         content {
           and {
-            object_size_greater_than = try(filter.value.object_size_greater_than, null)
-            object_size_less_than    = try(filter.value.object_size_less_than, null)
-            prefix                   = try(filter.value.prefix, null)
-            tags                     = try(filter.value.tags, filter.value.tag, null)
+            object_size_greater_than = try(filter.value.and[0].object_size_greater_than, null)
+            object_size_less_than    = try(filter.value.and[0].object_size_less_than, null)
+            prefix                   = try(filter.value.and[0].prefix, null)
+            tags                     = try(filter.value.and[0].tags, filter.value.and[0].tag, null)
           }
         }
       }
+
 
     }
   }
