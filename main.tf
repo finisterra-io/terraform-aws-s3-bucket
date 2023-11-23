@@ -11,9 +11,9 @@ locals {
   attach_policy = var.attach_require_latest_tls_policy || var.attach_elb_log_delivery_policy || var.attach_lb_log_delivery_policy || var.attach_deny_insecure_transport_policy || var.attach_inventory_destination_policy || var.attach_deny_incorrect_encryption_headers || var.attach_deny_incorrect_kms_key_sse || var.attach_deny_unencrypted_object_uploads || var.attach_policy
 
   # Variables with type `any` should be jsonencode()'d when value is coming from Terragrunt
-  grants               = try(jsondecode(var.grant), var.grant)
-  cors_rules           = try(jsondecode(var.cors_rule), var.cors_rule)
-  lifecycle_rules      = try(jsondecode(var.lifecycle_rule), var.lifecycle_rule)
+  grants     = try(jsondecode(var.grant), var.grant)
+  cors_rules = try(jsondecode(var.cors_rule), var.cors_rule)
+  # lifecycle_rules      = try(jsondecode(var.lifecycle_rule), var.lifecycle_rule)
   intelligent_tiering  = try(jsondecode(var.intelligent_tiering), var.intelligent_tiering)
   metric_configuration = try(jsondecode(var.metric_configuration), var.metric_configuration)
 }
@@ -213,13 +213,13 @@ resource "aws_s3_bucket_cors_configuration" "this" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
-  count = local.create_bucket && length(local.lifecycle_rules) > 0 ? 1 : 0
+  count = local.create_bucket && length(var.var.lifecycle_rule) > 0 ? 1 : 0
 
   bucket                = aws_s3_bucket.this[0].id
   expected_bucket_owner = var.expected_bucket_owner
 
   dynamic "rule" {
-    for_each = local.lifecycle_rules
+    for_each = var.var.lifecycle_rule
 
     content {
       id     = try(rule.value.id, null)
