@@ -219,7 +219,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   expected_bucket_owner = var.expected_bucket_owner
 
   dynamic "rule" {
-    for_each = var.var.lifecycle_rule
+    for_each = var.lifecycle_rule
 
     content {
       id     = try(rule.value.id, null)
