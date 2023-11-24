@@ -309,10 +309,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
           }
         }
       }
+
       dynamic "filter" {
         for_each = [
           for filter in try(rule.value.filter, []) :
-          filter if length(keys(filter)) == 1 && length(keys(filter.and[0])) > 0
+          filter if length(keys(filter)) == 1 && try(length(keys(filter.and[0])) > 0, false)
         ]
 
         content {
