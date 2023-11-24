@@ -287,11 +287,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
         }
       }
 
-      # Max 1 block - filter - with one key argument or a single tag
+      # Max 1 block - filter - with one key argument, a single tag, or a prefix
       dynamic "filter" {
         for_each = [
           for v in try(rule.value.filter, []) :
-          v if length(keys(v)) == 0 && (length(try(v.tags, {})) == 1 || length(try(v.tag, [])) == 1)
+          v if length(keys(v)) == 1 && contains(keys(v), "prefix") || (length(try(v.tags, {})) == 1 || length(try(v.tag, [])) == 1)
         ]
 
         content {
