@@ -8,7 +8,7 @@ output "arn" {
   value       = try(aws_s3_bucket.this[0].arn, "")
 }
 
-output "domain_name" {
+output "bucket_domain_name" {
   description = "The bucket domain name. Will be of format bucketname.s3.amazonaws.com."
   value       = try(aws_s3_bucket.this[0].bucket_domain_name, "")
 }
